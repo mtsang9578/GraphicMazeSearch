@@ -7,8 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GraphicMaze {
-	private final int TRIED = 3;	//visited cells marked with 3
-	private final int SOLVED = 7;	//final path when solved marked with 7
+	private final int BLOCKED = 0;	//Blocked cells marked with 0 
+	private final int OPEN = 1;		//Open cells marked as 1
+	private final int VISITED = 2;	//Blocked cells that become open during generation are marked with 2
+	private final int TRIED = 3;	//Cells visited marked with 3 during traverse
+	private final int SOLVED = 7;	//Final path marked with 7 when solved
+
 	private int i;
 	private JPanel panel;
 	private int[][] grid;
@@ -17,9 +21,9 @@ public class GraphicMaze {
 	private Stack path;
 
 
-	//--------------------------------------------------------------
+	//---------------------------------------------------------------------------------------
 	// Constructor that generates a maze from the maze class
-	//--------------------------------------------------------------
+	//---------------------------------------------------------------------------------------
 	public GraphicMaze(int numRows, int numCols) {
 		path = new Stack();
 
@@ -33,14 +37,14 @@ public class GraphicMaze {
 		GridLayout layout = new GridLayout(rows, cols);
 		panel = new JPanel();
 		panel.setLayout(layout);
-		
+
 		//initializes the squares in the graphic maze to black or white
-		for(int r =0; r< rows; r++){
-			for(int c = 0; c<cols; c++){
+		for(int r = 0; r < rows; r++) {
+			for(int c = 0; c < cols; c++) {
 				JPanel block = new JPanel();
 				//block.setSize(new Dimension(100,100));
 				block.setPreferredSize(new Dimension(10, 10));
-				if (grid[r][c] == 1 ||grid[r][c] == 2 ) {
+				if (grid[r][c] == 1 ||grid[r][c] == VISITED ) {
 					block.setBackground(Color.white);
 					blocks[r][c] = block; 
 					panel.add(block);
@@ -53,54 +57,54 @@ public class GraphicMaze {
 		}
 	}
 
-//	//--------------------------------------------------------------
-//	// Create a 20x20 maze by default
-//	//--------------------------------------------------------------
-//	public GraphicMaze() {
-//		this(20, 20);
-//	}
-
-	//--------------------------------------------------------------
-	// Calls the maze to be graphically solved
-	//--------------------------------------------------------------
-	public boolean traverse (int row, int column) throws InterruptedException
-	{
+	//---------------------------------------------------------------------------------------
+	// Recursively traverses the maze
+	//---------------------------------------------------------------------------------------
+	public boolean traverse (int row, int column) throws InterruptedException {
 		Thread.sleep(5);
 		path.push(new Position(row, column));
 		boolean done = false;
-		if (valid (row, column)) { 
-			grid[row][column] = TRIED; // this cell has been tried
-
+		if (valid (row, column)) {
+			// this cell has been tried
+			grid[row][column] = TRIED; 
 
 			//Creates a gradient for aesthetic effect 
-			i += 2*Math.PI;
+			i += 2 * Math.PI;
 			blocks[row][column].setBackground(new Color((int) (127.5 + 127.5 * Math.cos(i)),
 					(int) (127.5 + 127.5 * Math.sin(i)), 128));
 
-			if (row == grid.length-2 && column == grid[0].length-1) {
-				done = true; // the maze is finished
+			if (row == grid.length - 2 && column == grid[0].length-1) {
+				// the maze is finished
+				done = true; 
 			} else {
-				done = traverse (row + 1, column);     // down
+				//search 1 cell down
+				done = traverse (row + 1, column);
+
 				if (!done) {
+					//search 1 right
 					path.pop();
-					done = traverse (row, column + 1);  // right
+					done = traverse (row, column + 1);  
 				}
 
 				if (!done) {
+					//search 1 cell up 
 					path.pop();
-					done = traverse (row - 1, column);  // up
+					done = traverse (row - 1, column);
 				}
 
 				if (!done) {
+					//search 1 cell left 
 					path.pop();
-					done = traverse (row, column - 1);  // left
+					done = traverse (row, column - 1);
 				}
 			}
 
-			if (done) {  // this location is part of the final path
+			if (done) { 
+				// this location is part of the final path
 				grid[row][column] = SOLVED;
 				blocks[row][column].setBackground(Color.GREEN);
 			} else {
+				// backtrack and set the block to white
 				blocks[row][column].setBackground(Color.white);
 				path.pop();
 			}
@@ -109,9 +113,9 @@ public class GraphicMaze {
 	}
 
 
-	//--------------------------------------------------------------
+	//---------------------------------------------------------------------------------------
 	//  Determines if a specific location is valid.
-	//--------------------------------------------------------------
+	//---------------------------------------------------------------------------------------
 	private boolean valid (int row, int column) {
 		boolean result = false;
 
@@ -119,7 +123,7 @@ public class GraphicMaze {
 		if (row >= 0 && row < grid.length &&
 				column >= 0 && column < grid[row].length)
 
-			//  check if cell is not blocked and not previously tried
+			//  check if cell is not blocked (0)
 			if (grid[row][column] == 1 || grid[row][column] == 2)
 				result = true;
 
@@ -129,7 +133,7 @@ public class GraphicMaze {
 	//---------------------------------------------------------------------------------------
 	//  Returns the Graphic Panel
 	//---------------------------------------------------------------------------------------
-	public JPanel getPanel(){
+	public JPanel getPanel() {
 		return panel;
 	}
 
@@ -159,5 +163,4 @@ public class GraphicMaze {
 
 		return result;
 	}
-
 }

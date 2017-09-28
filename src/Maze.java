@@ -1,43 +1,35 @@
 import java.util.ArrayList;
 import java.util.Stack;
-//Mya Tsang
-//Eckard
-//ADS
-//1/17/2016
-//Graphic Maze
-//
-//Generates and solves a maze using stacks
 
-public class Maze
-{
-	//private final int TRIED = 3;
-	private final int PATH = 7;
-	private final int VISITED = 2;
+
+public class Maze {
+	private final int BLOCKED = 0;	//Blocked cells marked with 0 
+	private final int OPEN = 1;		//Open cells marked as 1
+	private final int VISITED = 2;	//Blocked cells that become open during generation are marked with 2
+	private final int TRIED = 3;	//Cells visited marked with 3 during traverse
+	private final int SOLVED = 7;	//Final path marked with 7 when solved
 
 	private Stack path;
 	private Stack nPath;
 	private int numRows, numCols;
-
-
 	private String[][] randomGrid;
 	private int[][]rGrid;
 
-
+	//---------------------------------------------------------------------------------------
+	// Creates an a maze with a given dimension
+	//---------------------------------------------------------------------------------------
 	public Maze(int r, int c) {
 		numRows = r;
 		numCols = c;
 		path = new Stack();
 		nPath = new Stack();
 		generateRandomMaze();	
-
 	}
 
 	//---------------------------------------------------------------------------------------
-	//  Tries to recursively follow the maze. Inserts special
-	//  characters for locations that have been tried and location
-	//  that become part of the solution.
+	//Generates a random maze 
 	//---------------------------------------------------------------------------------------
-	public void generateRandomMaze(){
+	public void generateRandomMaze() {
 
 		int r = numRows;
 		int c = numCols;
@@ -54,22 +46,23 @@ public class Maze
 		}
 
 
-		//Set up the integer grid with closed borders
+		//Set up the checkered integer grid with closed borders
 		for(int i = 0; i < 2 * r + 1; i++) {
 			for(int j = 0; j < 2 * c + 1; j++) {
 				if(i % 2 == 0) {
-					rGrid[i][j] = 0;
+					rGrid[i][j] = BLOCKED;
 				} else if(j == 0 ) {
-					rGrid[i][j] = 0;
+					rGrid[i][j] = BLOCKED;
 				} else if(i == 2 * r) {
-					rGrid[i][j] = 0;
+					rGrid[i][j] = BLOCKED;
 				} else if((i + j) % 2 == 0) {
-					rGrid[i][j] = 1;
+					rGrid[i][j] = OPEN;
 				}
 			}
 		}
 
-		rGrid[2 * r - 1][2 * c] = 1;
+		//Open a square at the bottom right corner for exit
+		rGrid[2 * r - 1][2 * c] = OPEN;
 
 		//Generate a maze starting at this point
 		generate(0,0);
@@ -77,7 +70,7 @@ public class Maze
 	}
 
 	//---------------------------------------------------------------------------------------
-	// Function to recursively generate a maze
+	//Recursively traverse a checkered grid and randomly chooses cells to open
 	//---------------------------------------------------------------------------------------
 	public boolean generate(int row, int col) {
 		nPath.push(new Position(row, col)); // add it to the maze
@@ -86,15 +79,17 @@ public class Maze
 		int numOpen = 0;
 		ArrayList<String> openPos = new ArrayList<String>();
 
-		//look at neighbors
+		//look at neighbors and if they are open, add them to the stack of open positions
 		if (rvalid(row + 1, col)) {
 			numOpen++;
 			openPos.add("D");
 		}
+		
 		if (rvalid(row, col + 1)) {
 			numOpen++;
 			openPos.add("R");
 		}
+		
 		if (rvalid(row-1, col)) {
 			numOpen++;
 			openPos.add("U");
@@ -104,11 +99,12 @@ public class Maze
 			openPos.add("L");
 		}
 
-		if (numOpen == 0) { 
-			nPath.pop();		//if dead end then backtrack;
-
+		if (numOpen == 0) {
+			//if dead end then backtrack;
+			nPath.pop();		
 			if (nPath.empty()) { 
-				return true;	//if the stack is empty at dead end you are done
+				//if the stack is empty at dead end you are done
+				return true;
 			} else {
 				//if the stack is not empty re-search the last position
 				Position current = (Position) nPath.pop(); 	
@@ -117,6 +113,7 @@ public class Maze
 		} else {
 			//choose a random spot from unvisited and open a path to it
 			int choice = (int) (Math.random() * numOpen);
+			
 			if (openPos.get(choice).equals("D")) {
 				randomGrid[row][col] = "D";
 				rGrid[2 * row + 2][2 * col + 1] = VISITED;
@@ -141,8 +138,6 @@ public class Maze
 		}
 		return done;
 	}
-	
-
 
 	//---------------------------------------------------------------------------------------
 	//Returns the randomly generated grid
@@ -150,7 +145,6 @@ public class Maze
 	public int[][] getGrid(){
 		return rGrid;
 	}
-
 
 	//---------------------------------------------------------------------------------------
 	//  Determines if a specific location is valid when generating
