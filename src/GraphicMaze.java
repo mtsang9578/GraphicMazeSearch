@@ -5,7 +5,11 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+/**
+ * Class that contains the graphic elements of a maze
+ * @author Mya Tsang
+ *
+ */
 public class GraphicMaze {
 	private final int BLOCKED = 0;	//Blocked cells marked with 0 
 	private final int OPEN = 1;		//Open cells marked as 1
@@ -21,9 +25,11 @@ public class GraphicMaze {
 	private Stack path;
 
 
-	//---------------------------------------------------------------------------------------
-	// Constructor that generates a maze from the maze class
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Constructs the graphic element for a maze of given dimensions
+	 * @param numRows
+	 * @param numCols
+	 */
 	public GraphicMaze(int numRows, int numCols) {
 		path = new Stack();
 
@@ -57,9 +63,13 @@ public class GraphicMaze {
 		}
 	}
 
-	//---------------------------------------------------------------------------------------
-	// Recursively traverses the maze
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Recursively traverses the maze
+	 * @param row
+	 * @param column
+	 * @return true if finished
+	 * @throws InterruptedException
+	 */
 	public boolean traverse (int row, int column) throws InterruptedException {
 		Thread.sleep(5);
 		path.push(new Position(row, column));
@@ -68,7 +78,7 @@ public class GraphicMaze {
 			// this cell has been tried
 			grid[row][column] = TRIED; 
 
-			//Creates a gradient for aesthetic effect 
+			//Creates a rainbow path 
 			i += 2 * Math.PI;
 			blocks[row][column].setBackground(new Color((int) (127.5 + 127.5 * Math.cos(i)),
 					(int) (127.5 + 127.5 * Math.sin(i)), 128));
@@ -113,9 +123,12 @@ public class GraphicMaze {
 	}
 
 
-	//---------------------------------------------------------------------------------------
-	//  Determines if a specific location is valid.
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Checks to see if a cell is in the bounds of the maze and if it isn't blocked
+	 * @param row
+	 * @param column
+	 * @return true if valid column 
+	 */
 	private boolean valid (int row, int column) {
 		boolean result = false;
 
@@ -130,17 +143,21 @@ public class GraphicMaze {
 		return result;
 	}
 
-	//---------------------------------------------------------------------------------------
-	//  Returns the Graphic Panel
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Getter method for the graphic maze panel
+	 * @return panel 
+	 */
 	public JPanel getPanel() {
 		return panel;
 	}
 
-	//---------------------------------------------------------------------------------------
-	//  Returns the maze as a string.
-	//---------------------------------------------------------------------------------------
-	public String toString () {
+
+	/**
+	 * Overrides the default toString method
+	 * @return string
+	 */
+	 public String toString () {
+	 
 		String result = "\n";
 		int[][] grid2 = new int[grid.length][grid[0].length];
 

@@ -1,7 +1,11 @@
 import java.util.ArrayList;
 import java.util.Stack;
 
-
+/**
+ * Class that constructs a maze 
+ * @author Mya Tsang
+ *
+ */
 public class Maze {
 	private final int BLOCKED = 0;	//Blocked cells marked with 0 
 	private final int OPEN = 1;		//Open cells marked as 1
@@ -15,9 +19,11 @@ public class Maze {
 	private String[][] randomGrid;
 	private int[][]rGrid;
 
-	//---------------------------------------------------------------------------------------
-	// Creates an a maze with a given dimension
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Constructor for a maze of given dimensions
+	 * @param r
+	 * @param c
+	 */
 	public Maze(int r, int c) {
 		numRows = r;
 		numCols = c;
@@ -26,9 +32,9 @@ public class Maze {
 		generateRandomMaze();	
 	}
 
-	//---------------------------------------------------------------------------------------
-	//Generates a random maze 
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Generates a random maze 
+	 */
 	public void generateRandomMaze() {
 
 		int r = numRows;
@@ -44,7 +50,6 @@ public class Maze {
 				}
 			}
 		}
-
 
 		//Set up the checkered integer grid with closed borders
 		for(int i = 0; i < 2 * r + 1; i++) {
@@ -69,9 +74,12 @@ public class Maze {
 
 	}
 
-	//---------------------------------------------------------------------------------------
-	//Recursively traverse a checkered grid and randomly chooses cells to open
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Recursively traverses a checkered grid and determines which cells to open
+	 * @param row
+	 * @param col
+	 * @return true if finished
+	 */
 	public boolean generate(int row, int col) {
 		nPath.push(new Position(row, col)); // add it to the maze
 		boolean done = false;
@@ -139,16 +147,20 @@ public class Maze {
 		return done;
 	}
 
-	//---------------------------------------------------------------------------------------
-	//Returns the randomly generated grid
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Returns the numeric representation of the maze in an array
+	 * @return
+	 */
 	public int[][] getGrid(){
 		return rGrid;
 	}
 
-	//---------------------------------------------------------------------------------------
-	//  Determines if a specific location is valid when generating
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Determines if a cell is in the bounds of the matrix and has not been previously entered
+	 * @param row
+	 * @param column
+	 * @return
+	 */
 	private boolean rvalid (int row, int column) {
 		boolean result = false;
 

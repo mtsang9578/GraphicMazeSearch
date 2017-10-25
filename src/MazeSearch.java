@@ -2,12 +2,17 @@ import java.awt.Dimension;
 import java.util.Scanner;
 import javax.swing.JFrame;
 
-
+/**
+ * Contains the main method for the program. Generates mazes in a loop
+ * @author admin
+ *
+ */
 public class MazeSearch {
-	//---------------------------------------------------------------------------------------
-	//  Creates a new maze, prints its original form, tries to
-	//  solve it, and prints out its final form.
-	//---------------------------------------------------------------------------------------
+	/**
+	 * Continuously generates and solves mazes
+	 * @param args
+	 * @throws InterruptedException
+	 */
 	public static void main (String[] args) throws InterruptedException {
 		JFrame application;
 		GraphicMaze maze;
