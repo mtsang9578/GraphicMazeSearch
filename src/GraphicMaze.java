@@ -112,7 +112,7 @@ public class GraphicMaze {
 			if (done) { 
 				// this location is part of the final path
 				grid[row][column] = SOLVED;
-				blocks[row][column].setBackground(Color.GREEN);
+				//blocks[row][column].setBackground(Color.GREEN);
 			} else {
 				// backtrack and set the block to white
 				blocks[row][column].setBackground(Color.white);

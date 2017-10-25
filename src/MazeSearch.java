@@ -17,14 +17,37 @@ public class MazeSearch {
 		JFrame application;
 		GraphicMaze maze;
 		while(true) {
+			
+			//Creates a 10x10 maze
 			application = new JFrame();
 			application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-			maze = new GraphicMaze(30, 30);
+			maze = new GraphicMaze(10, 10); //Specify the dimensions of the maze
 			application.setContentPane(maze.getPanel());
 			application.setSize(new Dimension(800,800));	
 			application.setVisible( true );
 			maze.traverse(1, 1);
-
+			Thread.sleep(100);
+			application.setVisible(false);
+			
+			//Creates a 20x20 maze
+			application = new JFrame();
+			application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+			maze = new GraphicMaze(20, 20); //Specify the dimensions of the maze
+			application.setContentPane(maze.getPanel());
+			application.setSize(new Dimension(800,800));	
+			application.setVisible( true );
+			maze.traverse(1, 1);
+			Thread.sleep(100);
+			application.setVisible(false);
+			
+			//Creates a 15x15 maze
+			application = new JFrame();
+			application.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+			maze = new GraphicMaze(15, 15); //Specify the dimensions of the maze
+			application.setContentPane(maze.getPanel());
+			application.setSize(new Dimension(800,800));	
+			application.setVisible( true );
+			maze.traverse(1, 1);
 			Thread.sleep(100);
 			application.setVisible(false);
 		}
